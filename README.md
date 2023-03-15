@@ -22,9 +22,13 @@ Votre programme doit afficher sur la sortie standard le résultat de la valeur m
 ## ex01
 
 ```
-La notation polonaise inversée (NPI) est une notation mathématique dans laquelle les opérateurs suivent les opérandes. Par exemple, pour l'expression arithmétique "3 + 4", en notation polonaise inversée, elle serait écrite comme "3 4 +".
+La notation polonaise inversée (NPI) est une notation mathématique dans laquelle les
+opérateurs suivent les opérandes. Par exemple, pour l'expression arithmétique "3 + 4",
+en notation polonaise inversée, elle serait écrite comme "3 4 +".
 
-La notation polonaise inversée a été inventée par le mathématicien polonais Jan Łukasiewicz dans les années 1920. Elle est utilisée dans certains calculatrices et langages de programmation pour évaluer des expressions arithmétiques.
+La notation polonaise inversée a été inventée par le mathématicien polonais Jan Łukasiewicz
+dans les années 1920. Elle est utilisée dans certains calculatrices et langages de
+programmation pour évaluer des expressions arithmétiques.
 ```
 
 Vous devez créer un programme qui respecte ces contraintes:
