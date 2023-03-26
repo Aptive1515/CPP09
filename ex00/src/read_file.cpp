@@ -6,7 +6,7 @@
 /*   By: aptive <aptive@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 19:19:55 by aptive            #+#    #+#             */
-/*   Updated: 2023/03/15 15:13:44 by aptive           ###   ########.fr       */
+/*   Updated: 2023/03/26 13:24:31 by aptive           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,24 @@ int check_valid_format(std::string str)
 	return 1;
 }
 
+int check_valid_data(std::string str)
+{
+	std::string annee = str.substr(0, 4);
+	std::string mois = str.substr(5, 2);
+	std::string day = str.substr(8, 2);
+	// std::cout << annee << std::endl;
+	// std::cout << mois << std::endl;
+	// std::cout << day << std::endl;
+	if (atoi(annee.c_str()) < 2009 || atoi(annee.c_str()) > 2023)
+		return 0;
+	if (atoi(mois.c_str()) < 1 || atoi(mois.c_str()) > 12)
+		return 0;
+	if (atoi(day.c_str()) < 1 || atoi(day.c_str()) > 31)
+		return 0;
+
+	return 1;
+}
+
 void serch_and_print(std::map<std::string, double> mapData, std::string file)
 {
 	std::ifstream	flux(file.c_str());
@@ -97,6 +115,9 @@ void serch_and_print(std::map<std::string, double> mapData, std::string file)
 		{
 			if (!check_valid_format(line))
 				std::cout << "Error: bad input => " << line << std::endl;
+			else if (!check_valid_data(line))
+				std::cout << "Error: bad input => " << line << std::endl;
+
 			else
 			{
 				myPair = parse_to_pair(line, c);
