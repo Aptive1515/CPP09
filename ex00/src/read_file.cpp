@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_file.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aptive <aptive@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tdelauna <tdelauna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 19:19:55 by aptive            #+#    #+#             */
-/*   Updated: 2023/03/26 13:24:31 by aptive           ###   ########.fr       */
+/*   Updated: 2023/03/29 15:51:43 by tdelauna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ std::map<std::string, double> open_and_check_conf_file(std::string file, char c)
 
 	if (!flux.is_open())
 		throw std::string("Error : Unable to open the file !\n");
+	getline(flux, line);
 	while (!flux.eof() && getline(flux, line))
 	{
 		if (!line.empty() && line.find(c) != std::string::npos )
@@ -82,15 +83,21 @@ int check_valid_format(std::string str)
 	return 1;
 }
 
-int check_valid_data(std::string str)
+int check_valid_data(std::string str, std::map<std::string, double> mapData)
 {
-	std::string annee = str.substr(0, 4);
+	// std::string annee = str.substr(0, 4);
 	std::string mois = str.substr(5, 2);
 	std::string day = str.substr(8, 2);
-	// std::cout << annee << std::endl;
-	// std::cout << mois << std::endl;
-	// std::cout << day << std::endl;
-	if (atoi(annee.c_str()) < 2009 || atoi(annee.c_str()) > 2023)
+	std::string date = str.substr(0, 10);
+	std::map<std::string, double>::iterator it =  mapData.begin();
+	std::map<std::string, double>::reverse_iterator it_end =  mapData.rbegin();
+
+
+
+
+	if (it->first.compare(date) > 0)
+		return 0;
+	if (it_end->first.compare(date) < 0)
 		return 0;
 	if (atoi(mois.c_str()) < 1 || atoi(mois.c_str()) > 12)
 		return 0;
@@ -109,26 +116,33 @@ void serch_and_print(std::map<std::string, double> mapData, std::string file)
 
 	if (!flux.is_open())
 		throw std::string("Error : Unable to open the file !\n");
+	getline(flux, line);
 	while (!flux.eof() && getline(flux, line))
 	{
 		if (!line.empty())
 		{
 			if (!check_valid_format(line))
 				std::cout << "Error: bad input => " << line << std::endl;
-			else if (!check_valid_data(line))
+			else if (!check_valid_data(line, mapData))
 				std::cout << "Error: bad input => " << line << std::endl;
 
 			else
 			{
 				myPair = parse_to_pair(line, c);
-				std::map<std::string, double>::iterator it = mapData.lower_bound(myPair.first);
+
+				std::map<std::string, double>::iterator itup = mapData.lower_bound(myPair.first);
+
 				if (myPair.second < 0)
 					std::cout << "Error: not a positive number." << std::endl;
 				else if (myPair.second > 1000)
 					std::cout << "Error: too large a number." << std::endl;
 				else
-					std::cout << it->first << " => "<< it->second * myPair.second << std::endl;
+				{
+					if (itup->first.compare(myPair.first) > 0)
+						itup--;
+					std::cout << myPair.first << " => " << myPair.second <<  " = " << itup->second * myPair.second << std::endl;
 
+				}
 			}
 		}
 	}
